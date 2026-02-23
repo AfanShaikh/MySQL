@@ -1,0 +1,417 @@
+USE DBPrac;
+
+-- 1. Show all records from the table.
+SELECT *
+FROM salaries;
+
+
+-- 2.Display only job_title and salary_in_usd.
+
+SELECT job_title , salary_in_usd
+FROM salaries;
+
+-- 3.Find all employees whose experience_level is 'SE'.
+SELECT * 
+FROM salaries
+WHERE experience_level = 'SE';
+
+-- 4.Show employees where salary_in_usd is greater than 100000.
+
+SELECT *
+FROM salaries 
+WHERE salary_in_usd > 100000;
+
+
+-- 5.Display records where company_location is 'US'.
+
+SELECT *
+FROM salaries 
+WHERE company_location = 'US';
+
+
+-- 6.Sort employees by salary_in_usd in descending order.
+
+SELECT *
+FROM salaries
+ORDER BY salary_in_usd DESC;
+
+-- 7.Show top 3 highest paid employees.
+
+SELECT job_title, salary_in_usd, MAX(salary_in_usd)
+FROM salaries 
+GROUP BY job_title,salary_in_usd
+LIMIT 3;
+
+SELECT * 
+FROM salaries
+LIMIT 3;
+
+
+-- 8.Count total number of employees.
+
+SELECT job_title,Count(*)
+FROM salaries
+GROUP BY job_title;
+
+-- 9.Find minimum and maximum salary.
+
+SELECT  salary_in_usd, MIN(salary_in_usd) AS MINI_Salary, MAX(salary_in_usd) AS MAX_Salary
+FROM salaries 
+GROUP BY salary_in_usd;
+
+-- 10.Show employees whose remote_ratio is 0.
+
+SELECT *
+FROM salaries 
+WHERE remote_ratio = 0;
+
+-- 11.Count number of employees for each experience_level.
+
+SELECT experience_level,COUNT(*)
+FROM salaries 
+GROUP BY experience_level;
+
+-- 12.Find average salary for each job_title.
+
+SELECT job_title, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+GROUP BY job_title;
+
+-- 13.Show total salary paid per company_location.
+
+SELECT company_location, SUM(salary_in_usd) AS Total_Salary
+FROM salaries 
+GROUP BY company_location;
+
+-- 14.Find number of employees in each company_size.
+
+SELECT company_size,COUNT(job_title)
+FROM salaries 
+GROUP BY company_size;
+
+-- 15.Show job titles where average salary is greater than 150000.
+
+SELECT job_title, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+WHERE salary_in_usd > 150000
+GROUP BY job_title;
+
+-- 16.Find highest salary for each company_location.
+
+SELECT company_location, MAX(salary_in_usd) AS MAX_Salary
+FROM salaries 
+GROUP BY company_location;
+
+-- 17.Show total employees working remotely (remote_ratio = 100).
+
+SELECT COUNT(*) AS total_remote_employees
+FROM salaries
+WHERE remote_ratio = 100;
+
+
+-- 18.Count employees grouped by employment_type.
+
+SELECT employment_type, COUNT(*)
+FROM salaries 
+GROUP BY employment_type;
+
+-- 19.Find average salary for each experience_level.
+
+SELECT experience_level, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+GROUP BY experience_level;
+
+-- 20.Show top 2 highest paying job titles based on average salary.
+
+SELECT job_title, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+GROUP BY job_title
+ORDER BY AVG_Salary DESC
+LIMIT 2;
+
+
+-- 100 query 
+/*
+SET 1
+✅ Level 1 (Basic)
+
+1 Show all records from the table.
+
+2 Display only job_title and salary_in_usd.
+
+3 Find employees whose experience_level = 'SE'.
+
+4 Show employees where salary_in_usd > 120000.
+
+5 Sort employees by work_year in descending order.
+
+*/
+-- 1 Show all records from table 
+SELECT * 
+FROM salaries;
+
+-- 2 .DISPLAY only job_title and salary_in_usd
+
+SELECT job_title, salary_in_usd
+FROM salaries;
+
+-- 3 Find employees whose experience_level = 'SE'.
+
+SELECT *
+FROM salaries
+WHERE experience_level = 'SE';
+
+-- 4 Show employees where salary_in_usd > 120000.
+ 
+ SELECT * 
+ FROM salaries
+ WHERE salary_in_usd > 120000;
+ 
+ -- 5 Sort employees by work_year in descending order.
+
+SELECT *
+FROM salaries 
+ORDER BY work_year DESC;
+
+/*
+Level 2 (Filtering + Grouping)
+
+6 Count employees for each experience_level.
+
+7 Find average salary for each company_location.
+
+8 Show total salary paid per job_title.
+
+9 Find highest salary per experience_level.
+
+ 10 Show job titles where average salary > 150000.
+
+*/
+
+SELECT experience_level, COUNT(*)
+FROM salaries 
+GROUP BY experience_level;
+
+SELECT company_location, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries
+GROUP BY company_location;
+
+SELECT job_title, SUM(salary_in_usd) AS Total_Salary
+FROM salaries 
+GROUP BY job_title;
+
+SELECT experience_level, MAX(salary_in_usd) AS MAX_Salary
+FROM salaries
+GROUP BY experience_level;
+
+SELECT job_title, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+WHERE salary_in_usd > 150000
+GROUP BY job_title;
+
+/*
+🔹 SET 2
+✅ Level 1
+
+Show employees where company_location = 'US'.
+
+Display employees with remote_ratio = 100.
+
+Show employees with company_size = 'M'.
+
+Sort employees by salary_in_usd ascending.
+
+Show top 5 highest paid employees.
+*/
+
+SELECT *
+FROM salaries
+WHERE company_location = 'US';
+
+SELECT *
+FROM salaries 
+WHERE remote_ratio = 100;
+
+SELECT *
+FROM salaries 
+WHERE company_size = 'M';
+
+SELECT * 
+FROM salaries 
+ORDER BY salary_in_usd;
+
+SELECT *
+FROM salaries 
+ORDER BY salary_in_usd DESC
+LIMIT 5;
+
+/*
+Level 2
+
+Count employees per employment_type.
+
+Find average salary per company_size.
+
+Show total employees per company_location.
+
+Find minimum salary per job_title.
+
+Show experience levels where average salary > 130000.
+*/
+
+SELECT employment_type, COUNT(*)
+FROM salaries 
+GROUP BY employment_type;
+
+SELECT company_size, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+GROUP BY company_size;
+
+SELECT company_location, COUNT(*) AS Total_Employee
+FROM salaries 
+GROUP BY company_location;
+
+SELECT job_title, MIN(salary_in_usd) AS MINI_Salary
+FROM salaries 
+GROUP BY job_title;
+
+SELECT experience_level, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+WHERE salary_in_usd > 130000
+GROUP BY experience_level;
+
+/*
+SET 3
+✅ Level 1
+Show employees with salary_in_usd between 90000 and 200000.
+
+Display employees working in 'AU'.
+
+Show employees hired in 2024.
+
+Find employees whose job_title contains 'Engineer'.
+
+Show employees with employment_type = 'FT'.
+*/
+
+SELECT *
+FROM salaries 
+WHERE salary_in_usd BETWEEN 90000 AND 200000;
+
+SELECT *
+FROM salaries 
+WHERE company_location = 'AU';
+
+SELECT *
+FROM salaries 
+WHERE work_year = 2024;
+
+SELECT *
+FROM salaries
+WHERE job_title LIKE '%Engineer%';
+
+SELECT *
+FROM salaries 
+WHERE employment_type = 'FT';
+
+/*
+Level 2
+Count employees per work_year.
+
+Find total salary per work_year.
+
+Show average salary per employment_type.
+
+Find highest salary per company_size.
+
+Show job titles having more than 5 employees.
+*/
+
+SELECT work_year, COUNT(*)
+FROM salaries 
+GROUP BY work_year;
+
+SELECT work_year, SUM(salary_in_usd) AS Total_Salary
+FROM salaries 
+GROUP BY work_year;
+
+SELECT employment_type, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+GROUP BY employment_type;
+
+SELECT company_size, MAX(salary_in_usd) AS Highest_Salary
+FROM salaries 
+GROUP BY company_size;
+
+SELECT job_title, COUNT(*) 
+FROM salaries
+GROUP BY job_title
+HAVING COUNT(*) > 5;
+
+
+/*
+ SET 4
+✅ Level 1
+Show employees where experience_level != 'SE'.
+
+Display unique job_title values.
+
+Show employees where remote_ratio = 0.
+
+Sort employees by job_title.
+
+Show bottom 5 lowest paid employees.
+*/
+
+SELECT *
+FROM salaries 
+WHERE experience_level NOT IN('SE');
+
+SELECT DISTINCT job_title 
+FROM salaries;
+
+SELECT *
+FROM salaries 
+WHERE remote_ratio = 0;
+
+SELECT *
+FROM salaries 
+ORDER BY job_title DESC;
+
+SELECT *
+FROM salaries
+ORDER BY salary_in_usd ASC
+LIMIT 5;
+
+/*
+Level 2
+Count employees per remote_ratio.
+
+Find average salary per remote_ratio.
+
+Show total salary per company_size.
+
+Find maximum salary per employment_type.
+
+Show company locations with more than 10 employees.
+*/
+SELECT remote_ratio, COUNT(*)
+FROM salaries 
+GROUP BY remote_ratio;
+
+SELECT remote_ratio, AVG(salary_in_usd) 
+FROM salaries 
+GROUP BY remote_ratio;
+
+SELECT company_size, SUM(salary_in_usd)
+FROM salaries 
+GROUP BY company_size;
+
+SELECT employment_type, MAX(salary_in_usd) MAX_Salary
+FROM salaries 
+GROUP BY employment_type;
+
+SELECT company_location, COUNT(*) 
+FROM salaries 
+GROUP BY company_location
+HAVING COUNT(*) >10;
