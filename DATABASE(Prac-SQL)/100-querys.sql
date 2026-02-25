@@ -415,3 +415,173 @@ SELECT company_location, COUNT(*)
 FROM salaries 
 GROUP BY company_location
 HAVING COUNT(*) >10;
+
+/*
+ SET 5
+✅ Level 1
+Show employees with salary_currency = 'USD'.
+
+Display employees from 'AE'.
+
+Show employees with salary < 100000.
+
+Show employees with company_size = 'L'.
+
+Display employees sorted by company_location.
+*/
+
+SELECT *
+FROM salaries 
+WHERE salary_currency = 'USD';
+
+SELECT *
+FROM salaries 
+WHERE company_location ='AE';
+
+SELECT *
+FROM salaries 
+WHERE salary_in_usd < 100000;
+
+SELECT * 
+FROM salaries 
+WHERE company_size = 'L';
+
+SELECT *
+FROM salaries 
+ORDER BY company_location;
+
+/*
+Level 2
+Find average salary per job_title for US companies only.
+
+Count employees per job_title in 2024.
+
+Show highest salary per work_year.
+
+Find total salary paid to SE employees.
+
+Show employment types having more than 20 employees.
+*/
+SELECT job_title, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+WHERE company_location = 'US'
+GROUP BY job_title;
+
+SELECT job_title, COUNT(*)
+FROM salaries 
+WHERE work_year = 2024
+GROUP BY job_title;
+
+SELECT job_title, MAX(salary_in_usd) AS Highest_Salary
+FROM salaries 
+WHERE work_year = 2024
+GROUP BY job_title;
+
+SELECT SUM(salary_in_usd) AS Total_Salary
+FROM salaries
+WHERE experience_level = 'SE';
+
+SELECT employment_type, COUNT(*) 
+FROM salaries 
+GROUP BY employment_type
+HAVING COUNT(*) >20;
+
+/*
+SET 6
+✅ Level 1
+Show employees whose job_title starts with 'Machine'.
+
+Display employees with salary_in_usd >= 180000.
+
+Show employees working remotely partially (remote_ratio = 50).
+
+Display distinct company_location.
+
+Show employees ordered by experience_level.
+*/
+SELECT *
+FROM salaries 
+WHERE job_title Like ('Machine%');
+
+SELECT *
+FROM salaries 
+WHERE salary_in_usd >= 180000;
+
+SELECT *
+FROM salaries
+WHERE remote_ratio = 50;
+
+SELECT DISTINCT company_location 
+FROM salaries ;
+
+SELECT *
+FROM salaries 
+ORDER BY experience_level;
+
+/* Level 2
+Find average salary per company_location for SE employees.
+
+Count employees per company_size in 2024.
+
+Show minimum salary per experience_level.
+
+Find job titles with average salary < 100000.
+
+Show company sizes where total salary > 1,000,000.
+*/
+SELECT company_location, AVG(salary_in_usd) 
+FROM salaries 
+WHERE experience_level = 'SE'
+GROUP BY company_location;
+
+SELECT company_size, COUNT(*)
+FROM salaries 
+WHERE work_year = 2024
+GROUP BY company_size ;
+
+SELECT experience_level, MIN(salary_in_usd)
+FROM salaries 
+GROUP BY experience_level;
+
+SELECT job_title, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries
+GROUP BY job_title
+HAVING AVG_Salary < 100000;
+
+SELECT company_size, SUM(salary_in_usd) AS Total_Salary
+FROM salaries 
+GROUP BY company_size
+HAVING Total_salary > 1000000;
+
+/*SET 7
+✅ Level 1
+Show employees with employment_type = 'PT'.
+
+Display employees hired before 2024.
+
+Show employees with salary exactly 90000.
+
+Show employees working in medium companies ('M').
+
+Display top 10 records ordered by salary.
+*/
+SELECT *
+FROM salaries 
+WHERE employment_type = 'PT';
+
+SELECT *
+FROM salaries
+WHERE work_year < 2024;
+
+SELECT *
+FROM salaries
+WHERE salary_in_usd = 90000;
+
+SELECT *
+FROM salaries 
+WHERE company_size = 'M';
+
+SELECT *
+FROM salaries 
+ORDER BY salary_in_usd DESC
+LIMIT 10;
