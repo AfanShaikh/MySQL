@@ -585,3 +585,120 @@ SELECT *
 FROM salaries 
 ORDER BY salary_in_usd DESC
 LIMIT 10;
+
+/*
+ Level 2
+Count employees per work_year and experience_level.
+
+Find average salary per job_title for large companies.
+
+Show total salary per employment_type.
+
+Find highest salary per remote_ratio.
+
+Show job titles with more than 3 SE employees.
+*/
+SELECT 
+    work_year,
+    experience_level,
+    COUNT(*) AS employee_count
+FROM salaries
+GROUP BY work_year, experience_level;
+
+-- ChatGPT Solution
+SELECT 
+    work_year,
+    experience_level,
+    COUNT(*) AS employee_count
+FROM salaries
+GROUP BY work_year, experience_level
+ORDER BY work_year, experience_level;
+
+SELECT job_title, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries
+WHERE company_size = 'L'
+GROUP BY job_title
+ORDER BY AVG_Salary DESC;
+
+SELECT employment_type, SUM(salary_in_usd) AS Total_Salary
+FROM salaries 
+GROUP BY employment_type;
+
+SELECT remote_ratio, MAX(salary_in_usd) AS Highest_Salary
+FROM salaries
+GROUP BY remote_ratio;
+
+SELECT job_title, COUNT(*) AS SE_Count
+FROM salaries
+WHERE experience_level = 'SE'
+GROUP BY job_title
+HAVING COUNT(*) > 3
+ORDER BY SE_Count DESC;
+
+
+/*
+ SET 8
+✅ Level 1
+Show employees whose residence is 'US'.
+Display employees where company and residence country are same.
+Show employees with company_size != 'S'.
+Display employees sorted by salary_currency.
+Show employees hired after 2023.
+*/
+SELECT *
+FROM salaries 
+WHERE employee_residence = 'US';
+
+SELECT *
+FROM salaries 
+WHERE company_location = employee_residence;
+
+SELECT *
+FROM salaries 
+WHERE company_size != 'S';
+
+SELECT *
+FROM salaries 
+WHERE company_size NOT IN('S');
+
+SELECT *
+FROM salaries 
+WHERE NOT company_size ='S';
+
+SELECT *
+FROM salaries
+ORDER BY salary_currency;
+
+SELECT *
+FROM salaries
+WHERE work_year > 2023;
+
+/*
+ Level 2
+Count employees where residence != company_location.
+Find average salary per employee_residence.
+Show total salary per remote_ratio.
+Find maximum salary per job_title in 2024.
+Show company locations with average salary > 140000.
+*/
+SELECT COUNT(*)
+FROM salaries 
+WHERE employee_residence != company_location;
+
+SELECT employee_residence, AVG(salary_in_usd) 
+FROM salaries
+GROUP BY employee_residence;
+
+SELECT remote_ratio, SUM(salary_in_usd) AS Total_Salary
+FROM salaries 
+GROUP BY remote_ratio;
+
+SELECT job_title, Max(salary_in_usd)
+FROM salaries
+WHERE work_year = 2024
+GROUP BY job_title;
+
+SELECT company_location, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+WHERE salary_in_usd > 140000
+GROUP BY company_location;

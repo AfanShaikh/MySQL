@@ -156,9 +156,118 @@ FROM salaries
 
 -- 22.	Find employees who earn more than average salary of their own job_title.
 
-SELECT job_title, salary_in_usd
+SELECT * 
 FROM salaries
-WHERE salary_in_usd > (
-SELECT  AVG(salary_in_usd) AS AVG_Salary
+JOIN (SELECT job_title, AVG(salary_in_usd) AS AVERAGE_SALARY 
+FROM salaries 
+GROUP BY job_title) AS T 
+ON salaries.job_title = T.job_title
+WHERE salary_in_usd > AVERAGE_SALARY;  
+
+
+-- 23.	Find second highest salary in the table.
+
+SELECT  MAX(salary_in_usd) AS Second_Highest
+FROM salaries 
+WHERE salary_in_usd <(
+SELECT Max(salary_in_usd) AS MAX_Salary
+FROM salaries);
+
+-- 24.	Show highest paid employee in each company_location
+
+SELECT company_location, MAX(salary_in_usd) AS Highest_Emp
+FROM salaries 
+GROUP BY company_location
+ORDER BY Highest_Emp DESC;
+
+-- window function solution 
+SELECT *
+FROM 
+(
+SELECT *, DENSE_RANK() OVER (PARTITION BY company_location ORDER BY salary_in_usd DESC) AS salary_ranking 
+FROM salaries 
+) AS T
+WHERE salary_ranking = 2; 
+
+-- 25 Find job titles that have more than 2 employees.
+SELECT 
+    job_title,
+    COUNT(*) 
 FROM salaries
+GROUP BY job_title
+HAVING COUNT(*) > 2;
+
+-- 26 Show employees whose salary is equal to the maximum salary of their job_title.
+
+SELECT *
+FROM salaries AS S
+JOIN
+(
+SELECT job_title, MAX(salary_in_usd) AS MAX_Salary
+FROM salaries 
+GROUP BY job_title) AS M
+ON S.job_title = M.job_title
+AND S.salary_in_usd = M.max_salary;
+
+
+-- ChatGpt Solution
+SELECT S.*
+FROM salaries AS S
+JOIN
+(
+SELECT job_title, MAX(salary_in_usd) AS MAX_Salary
+FROM salaries 
+GROUP BY job_title) AS M
+ON S.job_title = M.job_title
+AND S.salary_in_usd = M.max_salary;
+
+
+-- 27 Find employees working in the same location as highest paid employee
+SELECT *
+FROM salaries
+WHERE employee_residence =
+(
+    SELECT company_location
+    FROM salaries
+    WHERE salary_in_usd =
+    (
+        SELECT MAX(salary_in_usd)
+        FROM salaries
+    )
 );
+
+-- 28. Find job_title with highest average salary.
+SELECT job_title, AVG(salary_in_usd) AS AVG_Salary
+FROM salaries
+GROUP BY job_title
+ORDER BY AVG_Salary DESC
+LIMIT 1;
+
+-- 29. Show employees whose salary is below the average salary of their company_location.
+
+SELECT *
+FROM salaries 
+WHERE salary_in_usd < (
+SELECT AVG(salary_in_usd) AS AVG_Salary
+FROM salaries 
+GROUP BY company_location
+);
+
+-- ChatGpt Solution
+SELECT *
+FROM salaries s1
+WHERE salary_in_usd < (
+    SELECT AVG(salary_in_usd)
+    FROM salaries s2
+    WHERE s1.company_location = s2.company_location
+);
+
+-- 30. Create a new column using CASE that categorizes salary as: • High (>150000) • Medium (80000–150000) • Low (<80000)
+
+SELECT *,
+CASE 
+    WHEN salary_in_usd > 150000 THEN 'High'
+    WHEN salary_in_usd BETWEEN 80000 AND 150000 THEN 'Medium'
+    ELSE 'Low'
+END AS salary_category
+FROM salaries;
